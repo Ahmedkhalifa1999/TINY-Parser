@@ -9,11 +9,17 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    SyntaxTree.cpp \
+    SyntaxTreeWidget.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    Parser.cpp
 
 HEADERS += \
-    mainwindow.h
+    SyntaxTree.h \
+    SyntaxTreeWidget.h \
+    mainwindow.h \
+    Parser.h
 
 FORMS += \
     mainwindow.ui
