@@ -1,14 +1,15 @@
-#ifndef TERMINALNODE_H
-#define TERMINALNODE_H
+#ifndef NODE_H
+#define NODE_H
 
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDebug>
-class TerminalNode : public QGraphicsItem
+#include "SyntaxTree.h"
+class Node : public QGraphicsItem
 {
 public:
-    TerminalNode();
-    TerminalNode(std::string text);
+    Node();
+    Node(SyntaxTree *treeNode);
 
      //outer bounding for the object
     QRectF boundingRect() const;
@@ -16,10 +17,10 @@ public:
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
     //value to tell us if object is pressed or not
     bool hovered;
-    QString nodetext;
+    SyntaxTree *treeNode;
 protected:
     void mouseHoverEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 
-#endif // TERMINALNODE_H
+#endif // NODE_H

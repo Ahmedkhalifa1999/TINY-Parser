@@ -4,8 +4,7 @@
 #include <QtCore>
 #include <QGraphicsScene>
 #include <QtGui>
-#include "nonterminalnode.h"
-#include "terminalnode.h"
+#include "node.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class Dialog; }
@@ -23,8 +22,9 @@ private:
     Ui::Dialog *ui;
 
     QGraphicsScene *scene;
+    QGraphicsLineItem *line;
 
-    NonTerminalNode *nonTerminalNode;
+    Node *Node;
     TerminalNode *terminalNode;
 };
 #endif // DIALOG_H

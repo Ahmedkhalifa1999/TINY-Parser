@@ -14,11 +14,10 @@ Dialog::Dialog(QWidget *parent)
 
     ui->graphicsView->setScene(scene);
 
-    nonTerminalNode = new NonTerminalNode("Hello");
-    terminalNode = new TerminalNode("Yes");
-    terminalNode->setPos(100,100);
-    scene -> addItem(nonTerminalNode);
-    scene -> addItem(terminalNode);
+    Node = new Node("Hello");
+
+    scene -> addItem(Node);
+
 }
 
 Dialog::~Dialog()
