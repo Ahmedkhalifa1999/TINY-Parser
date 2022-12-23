@@ -22,7 +22,7 @@ Parser::Parser()
 
 void Parser::parseString(QString code)
 {
-
+    outputTree = Parser::program(getTokenList(code));
 }
 
 const SyntaxTree *Parser::getOutputTree() const
