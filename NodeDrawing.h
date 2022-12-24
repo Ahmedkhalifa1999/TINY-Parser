@@ -1,15 +1,21 @@
-#ifndef NODE_H
-#define NODE_H
+#ifndef NODEDRAWING_H
+#define NODEDRAWING_H
 
 #include <QPainter>
 #include <QGraphicsItem>
 #include <QDebug>
 #include "SyntaxTree.h"
-class Node : public QGraphicsItem
+
+#define NODE_WIDTH 100
+#define NODE_HEIGHT 50
+
+class NodeDrawing : public QGraphicsItem
 {
+    int x = 0;
+    int y = 0;
 public:
-    Node();
-    Node(SyntaxTree *treeNode);
+    NodeDrawing();
+    NodeDrawing(SyntaxTree *treeNode, int x, int y);
 
      //outer bounding for the object
     QRectF boundingRect() const;
@@ -23,4 +29,4 @@ protected:
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
 };
 
-#endif // NODE_H
+#endif // NODEDRAWING_H

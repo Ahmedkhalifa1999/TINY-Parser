@@ -1,22 +1,24 @@
-#include "node.h"
+#include "NodeDrawing.h"
 
-Node::Node()
+NodeDrawing::NodeDrawing()
 {
     hovered = false;
 }
 //outer most edge of our shape
-Node::Node(SyntaxTree * treeNode)
+NodeDrawing::NodeDrawing(SyntaxTree * treeNode, int x, int y)
 {
     hovered = false;
     this->treeNode = treeNode;
+    this->x = x - NODE_WIDTH/2;
+    this->y = y - NODE_HEIGHT/2;
 }
 
-QRectF Node::boundingRect() const
+QRectF NodeDrawing::boundingRect() const
 {
-    return QRectF(100,100,100,50);
+    return QRectF(x, y, NODE_WIDTH, NODE_HEIGHT);
 }
 
-void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void NodeDrawing::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     QRectF rec = boundingRect();
     QBrush brush (Qt::white);
@@ -33,7 +35,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     painter -> fillRect(rec,brush);
     painter -> setFont(QFont("Arial",12,-1,true));
-    painter -> drawText(105,115,treeNode->getValue());
+    painter -> drawText(x + 5, y + 15,treeNode->getValue());
 
     if(treeNode->getType() >= ASSIGN_STATEMENT)
     {
@@ -45,14 +47,14 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     }
 }
 
-void Node::mouseHoverEvent(QGraphicsSceneMouseEvent *event)
+void NodeDrawing::mouseHoverEvent(QGraphicsSceneMouseEvent *event)
 {
     hovered = true;
     update();
     QGraphicsItem::mousePressEvent(event);
 }
 
-void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+void NodeDrawing::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     hovered = false;
     update();
