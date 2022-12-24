@@ -70,7 +70,7 @@ void FileEditor::on_Save_clicked()
 void FileEditor::on_OpenFile_clicked()
 {
     QString fileNames = QFileDialog::getOpenFileName(this, ("Open File"),"C://");
-    string file=fileNames.toStdString();
+    file=fileNames.toStdString();
     if(file!="")
     {
     this->fileName=file;
@@ -112,7 +112,7 @@ void FileEditor::on_OpenFile_3_clicked()
 void FileEditor::on_NewFile_clicked()
 {
     QString fileNames = QFileDialog::getOpenFileName(this, ("Open File"),"C://");
-    string file=fileNames.toStdString();
+    file=fileNames.toStdString();
     if(file!="")
     {
     this->fileName=file;
