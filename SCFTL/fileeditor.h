@@ -6,10 +6,12 @@
 #include <iostream>
 #include <fstream>
 #include <stdio.h>
+#include "Parser.h"
 #include "scanner.hpp"
 using namespace std;
 extern vector<Token> Tokens;
 extern string ScannerOutput;
+extern Parser *P;
 namespace Ui {
 class FileEditor;
 }
@@ -38,8 +40,12 @@ private slots:
 
     void on_Compile_clicked();
 
+
+
 private:
     Ui::FileEditor *ui;
+
+    void SaveProcedure();
 };
 
 

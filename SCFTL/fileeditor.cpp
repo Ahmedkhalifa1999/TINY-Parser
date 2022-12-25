@@ -3,8 +3,11 @@
 #include "mainwindow.h"
 #include "qfiledialog.h"
 #include "compiler.h"
+//#include "SyntaxTreeWidget.h"
+Parser *P=new Parser();
 vector<Token> Tokens;
 string ScannerOutput;
+
 FileEditor::FileEditor(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::FileEditor)
@@ -14,7 +17,22 @@ FileEditor::FileEditor(QWidget *parent) :
     qInfo() <<"From file editor.cpp";
     qInfo() <<(QString::fromStdString(this->code));
     this->code=temp;
+    this->fileName=file;
+    ui->CodeArea->setText(NULL);
     ui->CodeArea->setText(QString::fromStdString(this->code));
+    int index= this->fileName.find_last_of('/');
+    cout<<"filename: "<<this->fileName;
+    cout<<"fileeditior: index= "<<index<<endl;
+    if(index!=-1)
+    {
+        ui->FileNameLabel->setText(QString::fromStdString(this->fileName.substr(index+1,this->fileName.length()-1)));
+    }
+    else
+    {
+        ui->FileNameLabel->setText(QString::fromStdString("untitled"));
+    }
+
+
 }
 
 FileEditor::~FileEditor()
@@ -22,17 +40,28 @@ FileEditor::~FileEditor()
     delete ui;
 }
 
-
-
-
-void FileEditor::on_Save_clicked()
+void FileEditor::SaveProcedure()
 {
     QString text= ui->CodeArea->toPlainText();
+    temp=text.toStdString();
+    if((this->fileName)=="")
+    {
+       (this->fileName) = (QFileDialog::getOpenFileName(this, ("Open File"),"C://")).toStdString();
+    }
     ofstream MyFile(this->fileName);
     string Text=text.toStdString();
     MyFile << Text;
     qInfo() <<"Save clicked";
     this->code=Text;
+    int index= this->fileName.find_last_of('/');
+    ui->FileNameLabel->setText(QString::fromStdString(this->fileName.substr(index+1,this->fileName.length()-1)));
+}
+
+
+void FileEditor::on_Save_clicked()
+{
+
+  SaveProcedure();
 
 }
 
@@ -42,7 +71,9 @@ void FileEditor::on_Save_clicked()
 void FileEditor::on_OpenFile_clicked()
 {
     QString fileNames = QFileDialog::getOpenFileName(this, ("Open File"),"C://");
-    string file=fileNames.toStdString();
+    file=fileNames.toStdString();
+    if(file!="")
+    {
     this->fileName=file;
     ifstream MyReadFile(file);
     string carrier;
@@ -57,7 +88,13 @@ void FileEditor::on_OpenFile_clicked()
     ui->CodeArea->setText(QString::fromStdString(this->code));
     qInfo() <<"Open clicked";
 
-
+    int index= this->fileName.find_last_of('/');
+    ui->FileNameLabel->setText(QString::fromStdString(this->fileName.substr(index+1,this->fileName.length()-1)));
+    }
+    else
+    {
+        //do nothing
+    }
 
 
 
@@ -76,16 +113,30 @@ void FileEditor::on_OpenFile_3_clicked()
 void FileEditor::on_NewFile_clicked()
 {
     QString fileNames = QFileDialog::getOpenFileName(this, ("Open File"),"C://");
-    string file=fileNames.toStdString();
+    file=fileNames.toStdString();
+    if(file!="")
+    {
     this->fileName=file;
     this->code="";
     ui->CodeArea->setText(QString::fromStdString(this->code));
     qInfo() <<"New Clicked";
+    int index= this->fileName.find_last_of('/');
+    ui->FileNameLabel->setText(QString::fromStdString(this->fileName.substr(index+1,this->fileName.length()-1)));
+    }
+    else
+    {
+        //do nothing
+    }
 }
 
 
 void FileEditor::on_Compile_clicked()
 {
+    SaveProcedure();
+    while(this->fileName=="")
+    {
+        SaveProcedure();
+    }
     qInfo() <<"Compile clicked";
     ScannerOutput="";
      qInfo() <<"line 90";
@@ -99,6 +150,12 @@ void FileEditor::on_Compile_clicked()
         ScannerOutput+=Tokens[loop].Value+",  "+Tokens[loop].Type+"\n";
         qInfo() <<(QString::fromStdString(Tokens[loop].Type+"  "+Tokens[loop].Value+"\n"));
     }
+
+    P->parseString(QString::fromStdString(this->code));
+    cout<<"CHECK ERROR 333333333333333333333333333333333333333333333333333333333333"<<endl;
+    cout<<P->getError()<<endl;
+    GrammerIsTrue=!(P->getError());
+
     Compiler *C = new Compiler;
     C->setAttribute(Qt::WA_DeleteOnClose);
     C->show();

@@ -49,9 +49,9 @@
    <property name="geometry">
     <rect>
      <x>210</x>
-     <y>10</y>
+     <y>30</y>
      <width>761</width>
-     <height>631</height>
+     <height>611</height>
     </rect>
    </property>
   </widget>
@@ -137,6 +137,19 @@
    </property>
    <property name="text">
     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt; font-weight:700;&quot;&gt;Compile&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="FileNameLabel">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>10</y>
+     <width>101</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>untitled file</string>
    </property>
   </widget>
  </widget>

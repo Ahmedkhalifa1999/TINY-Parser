@@ -238,10 +238,15 @@ Token getToken(string Code) {
 
         case ASSIGN:
             if (Code[currentChar] == ':') {
+                if(Code[currentChar+1]=='=')
+                {
                 currentChar += 2;
+                token.Type="ASSIGN";
+                token.Value=":=";
                 cout << ":=" << ", " << "ASSIGN" << endl;
                 /*return to start case to handle next character state*/
                 current_state = START;
+                }
             }
             else {
                 if (currentChar == Code.length())
@@ -249,7 +254,7 @@ Token getToken(string Code) {
                 else
                     current_state = START;
             }
-
+            return token;
             break;
         case SYMBOL:
             symbolType = symbol_type(Code[currentChar]);
@@ -258,10 +263,10 @@ Token getToken(string Code) {
                 token.Type = "SEMICOLON";
                 break;
             case LESSTHAN:
-                token.Type = "LESS THAN";
+                token.Type = "LESSTHAN";
                 break;
             case GREATERTHAN:
-                token.Type = "GREATER THAN";
+                token.Type = "GREATERTHAN";
                 break;
             case EQUAL:
                 token.Type = "EQUAL";
@@ -314,6 +319,7 @@ vector<Token> getTokenList(string input){
     vector<Token> tokens;
     Token token;
     int index = 0;
+    currentChar = 0;
     while((index < (input.length()-1))){
         cout<<input.substr(index,input.length());
         string i=input.substr(index,input.length());

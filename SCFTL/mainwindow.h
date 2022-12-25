@@ -6,10 +6,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-
+#include "fileeditor.h"
 #include <stdio.h>
 using namespace std;
 extern string temp;
+extern  string file;
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
@@ -26,6 +27,8 @@ private slots:
     void on_NewFolder_clicked();
 
     void on_OpenFolder_clicked();
+
+    void on_AboutBTN_clicked();
 
 private:
     Ui::MainWindow *ui;

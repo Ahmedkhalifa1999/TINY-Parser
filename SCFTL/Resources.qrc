@@ -15,6 +15,14 @@
         <file>Resources/SCFTL-logos/file-open-2_1_50x50.png</file>
         <file>Resources/SCFTL-logos/3820673-200_1_50x50.png</file>
         <file>Resources/SCFTL-logos/compile.png</file>
+        <file>Resources/correct.png</file>
+        <file>Resources/wrong.png</file>
+        <file>Resources/SCFTL-logos/edit.png</file>
+        <file>Resources/SCFTL-logos/Tree.png</file>
+        <file>Resources/png-clipart-computer-icons-icon-design-house-symbol-qualifications-wales-main-menu-angle-building.png</file>
+        <file>Resources/SCFTL-logos/Home.png</file>
+        <file>Resources/SCFTL-logos/Pngtreevector_house_icon_4013710_100x100.png</file>
+        <file>Resources/SCFTL-logos/error.png</file>
+        <file>Resources/SCFTL-logos/about.png</file>
     </qresource>
-    <qresource prefix="/new/prefix1"/>
 </RCC>
