@@ -1,16 +1,29 @@
 #ifndef SYNTAXTREEWIDGET_H
 #define SYNTAXTREEWIDGET_H
 
-#include <QWidget>
+#include <QDialog>
+#include <QtCore>
+#include <QGraphicsScene>
+#include <QGraphicsView>
+#include <QtGui>
+#include "SyntaxTree.h"
 
-class SyntaxTreeWidget : public QWidget
+#define NODE_VERTICAL_SEPARATION 40
+#define NODE_HORIZONTAL_SEPARATION 40
+
+class SyntaxTreeWidget : public QGraphicsView
 {
     Q_OBJECT
+
 public:
-    explicit SyntaxTreeWidget(QWidget *parent = nullptr);
+    SyntaxTreeWidget(SyntaxTree *tree, QWidget *parent = nullptr);
 
-signals:
+private:
+    QGraphicsScene *scene;
 
+    int getTreeWidth(SyntaxTree *tree);
+
+    void drawTree(SyntaxTree *tree, int x = 0, int y = 0);
 };
 
 #endif // SYNTAXTREEWIDGET_H
