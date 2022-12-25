@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "scanner.hpp"
+#include "Scanner.h"
 using namespace std;
-int currentChar = 0;
+unsigned long long currentChar = 0;
 /*All Tiny language reserved words stored for further use*/
 string Reserved_Words[] = { "if","then","else","end","repeat","until","read","write" };
 
@@ -19,7 +19,7 @@ Allstates current_state = START;//global variable to store the current state
 
 /*Utility functions to check for type of current character*/
 bool is_letter(char c) {
-    if (c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z')
+    if (((c >= 'A') && (c <= 'Z')) || ((c >= 'a') && (c <= 'z')))
         return true;
     else
         return false;
@@ -209,7 +209,7 @@ Token getToken(string Code) {
                 token.Type = "IDENTIFIER";
             }
             //token.Value = "";
-            is_Reserved = false;
+            //is_Reserved = false;
             if (currentChar == Code.length())
                 current_state = END;
             else
@@ -303,11 +303,13 @@ Token getToken(string Code) {
 
         }
     }
+
+    return {"ERROR", ""};
 }
 vector<Token> getTokenList(string input){
     vector<Token> tokens;
     Token token;
-    int index = 0;
+    unsigned long long index = 0;
     while((index < (input.length()-1))){
        // cout<<input.substr(index,input.length());
         string i=input.substr(index,input.length());
@@ -323,7 +325,7 @@ vector<Token> getTokenList(string input){
 
 
     }
-    index=0;
+    //index=0;
     /*while(index<tokens.size())
     {
         token=tokens[index];

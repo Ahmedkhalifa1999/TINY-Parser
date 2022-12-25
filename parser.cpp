@@ -1,11 +1,8 @@
 #include "Parser.h"
+#include <QString>
 
-unsigned int index = 0;
-Token token;
-bool error = false;
-set<int> err;
-void match(QString input, vector<Token> Tokens){ 
-    if(input == Tokens[index].Type){
+void Parser::match(QString input, vector<Token> Tokens){
+    if(input.toStdString() == Tokens[index].Type){
         index++;
     }
     else{
@@ -22,7 +19,7 @@ Parser::Parser()
 
 void Parser::parseString(QString code)
 {
-    outputTree = Parser::program(getTokenList(code));
+    outputTree = Parser::program(getTokenList(code.toStdString()));
 }
 
 const SyntaxTree *Parser::getOutputTree() const
@@ -40,7 +37,7 @@ SyntaxTree* Parser::program (vector<Token> Tokens){
 }
 
 
-SyntaxTree* stmt_sequence (vector<Token> Tokens){
+SyntaxTree* Parser::stmt_sequence (vector<Token> Tokens){
     SyntaxTree *seq = new SyntaxTree();
     seq = statement(Tokens);
     SyntaxTree *current = new SyntaxTree();
@@ -64,7 +61,7 @@ SyntaxTree* stmt_sequence (vector<Token> Tokens){
 
 //if -stmt -> if exp then stmt-sequence [else statment] end
 
-SyntaxTree* if_stmt (vector<Token> Tokens){
+SyntaxTree* Parser::if_stmt (vector<Token> Tokens){
     SyntaxTree *current = new SyntaxTree();
     current->setType(IF_STATEMENT);
     match("IF",Tokens);
@@ -85,18 +82,18 @@ SyntaxTree* if_stmt (vector<Token> Tokens){
 
 //read -stmt -> read identifier
 
-SyntaxTree* read_stmt (vector<Token> Tokens){
+SyntaxTree* Parser::read_stmt (vector<Token> Tokens){
     match("READ",Tokens);
     SyntaxTree *current = new SyntaxTree();
     current->setType(READ_STATEMENT);
-    current->setValue(Tokens[index].Value);
+    current->setValue(QString::fromStdString(Tokens[index].Value));
     match("IDENTIFIER",Tokens);
     return current;
 }
 
 //write -stmt -> write exp
 
-SyntaxTree* write_stmt (vector<Token> Tokens){
+SyntaxTree* Parser::write_stmt (vector<Token> Tokens){
     SyntaxTree *current= new SyntaxTree();
     current->setType(WRITE_STATEMENT);
     match("WRITE",Tokens);
@@ -105,7 +102,7 @@ SyntaxTree* write_stmt (vector<Token> Tokens){
 }
 
 
-SyntaxTree* statement (vector<Token> Tokens){
+SyntaxTree* Parser::statement (vector<Token> Tokens){
     SyntaxTree* node = NULL;
     Token current_token;
     if(index < Tokens.size())
@@ -125,7 +122,7 @@ SyntaxTree* statement (vector<Token> Tokens){
     return node;
 }
 
-SyntaxTree* repeat_stmt (vector<Token> Tokens){
+SyntaxTree* Parser::repeat_stmt (vector<Token> Tokens){
     SyntaxTree* node = new SyntaxTree();
     match("REPEAT", Tokens);
     node->setType(REPEAT_STATEMENT);
@@ -135,7 +132,7 @@ SyntaxTree* repeat_stmt (vector<Token> Tokens){
     return node;
 }
 
-SyntaxTree* assign_stmt (vector<Token> Tokens){
+SyntaxTree* Parser::assign_stmt (vector<Token> Tokens){
     SyntaxTree* node = new SyntaxTree();
     node->setType(ASSIGN_STATEMENT);
     match("IDENTIFIER",Tokens);
@@ -144,7 +141,7 @@ SyntaxTree* assign_stmt (vector<Token> Tokens){
     return node;
 }
 
-SyntaxTree* exp (vector<Token> Tokens){
+SyntaxTree* Parser::exp (vector<Token> Tokens){
     SyntaxTree* cur, *c1 = simple_exp(Tokens), *c2;
     Token x;
     if (index < Tokens.size())
@@ -162,7 +159,7 @@ SyntaxTree* exp (vector<Token> Tokens){
 //comparison-op -> < | =
 
 
-SyntaxTree* comparison_op (vector<Token> Tokens){
+SyntaxTree* Parser::comparison_op (vector<Token> Tokens){
     Token x;
     if (index < Tokens.size())
         x = Tokens[index];
@@ -170,13 +167,13 @@ SyntaxTree* comparison_op (vector<Token> Tokens){
     if(x.Type == "LESSTHAN"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("LESSTHAN",Tokens);
     }
     else if(x.Type == "EQUAL"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("EQUAL",Tokens);
     }
     else{
@@ -188,7 +185,7 @@ SyntaxTree* comparison_op (vector<Token> Tokens){
 
 //simple-exp -> term {addop term}
 
-SyntaxTree* simple_exp(vector<Token> Tokens){
+SyntaxTree* Parser::simple_exp(vector<Token> Tokens){
     SyntaxTree *current, *c1 = term(Tokens), *c2;
     Token x;
     if(index<Tokens.size()){
@@ -213,7 +210,7 @@ SyntaxTree* simple_exp(vector<Token> Tokens){
 
 //addop -> + | -
 
-SyntaxTree* addop(vector<Token> Tokens){
+SyntaxTree* Parser::addop(vector<Token> Tokens){
     Token x;
     if(index<Tokens.size()){
         x = Tokens[index];
@@ -222,13 +219,13 @@ SyntaxTree* addop(vector<Token> Tokens){
     if(x.Type == "PLUS"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("PLUS",Tokens);
     }
     else if(x.Type == "MINUS"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("MINUS",Tokens);
     }
     else{
@@ -240,7 +237,7 @@ SyntaxTree* addop(vector<Token> Tokens){
 
 //term -> factor {mulop factor}
 
-SyntaxTree* term(vector<Token> Tokens){
+SyntaxTree* Parser::term(vector<Token> Tokens){
     SyntaxTree *current, *c1 = factor(Tokens), *c2;
     Token x;
     if(index<Tokens.size()){
@@ -265,7 +262,7 @@ SyntaxTree* term(vector<Token> Tokens){
 
 //mulop -> * | /
 
-SyntaxTree* mulop(vector<Token> Tokens){
+SyntaxTree* Parser::mulop(vector<Token> Tokens){
     Token x;
     if(index<Tokens.size()){
         x = Tokens[index];
@@ -274,13 +271,13 @@ SyntaxTree* mulop(vector<Token> Tokens){
     if(x.Type == "MULT"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("MULT",Tokens);
     }
     else if(x.Type == "DIV"){
         current = new SyntaxTree();
         current->setType(OPERATOR_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("DIV",Tokens);
     }
     else{
@@ -292,7 +289,7 @@ SyntaxTree* mulop(vector<Token> Tokens){
 
 //factor -> (exp) | number | identifier
 
-SyntaxTree* factor(vector<Token> Tokens){
+SyntaxTree* Parser::factor(vector<Token> Tokens){
     Token x;
     if(index<Tokens.size()){
         x = Tokens[index];
@@ -306,13 +303,13 @@ SyntaxTree* factor(vector<Token> Tokens){
     else if (x.Type == "NUMBER"){
         current = new SyntaxTree();
         current->setType(CONSTANT_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("NUMBER",Tokens);
     }
     else if (x.Type == "IDENTIFIER"){
         current = new SyntaxTree();
         current->setType(IDENTIFIER_EXPRESSION);
-        current->setValue(Tokens[index].Value);
+        current->setValue(QString::fromStdString(Tokens[index].Value));
         match("IDENTIFIER",Tokens);
     }
     else{
@@ -320,4 +317,9 @@ SyntaxTree* factor(vector<Token> Tokens){
         err.insert(index);
     }
     return current;
+}
+
+bool Parser::getError() const
+{
+    return error;
 }

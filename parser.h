@@ -1,15 +1,15 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "scanner.hpp"
+#include "Scanner.h"
 #include "SyntaxTree.h"
-
-void match(QString input, vector<Token>  Tokens);
 
 class Parser
 {
 private:
     SyntaxTree *outputTree = nullptr;
+    bool error = false;
+
     SyntaxTree* stmt_sequence (vector<Token> Tokens);
     SyntaxTree* statement (vector<Token> Tokens);
     SyntaxTree* if_stmt (vector<Token> Tokens);
@@ -24,14 +24,19 @@ private:
     SyntaxTree* term(vector<Token> Tokens);
     SyntaxTree* mulop(vector<Token> Tokens);
     SyntaxTree* factor(vector<Token> Tokens);
+    void match(QString input, vector<Token> Tokens);
+
+    unsigned int index = 0;
+    Token token;
+    set<int> err;
 public:
-    bool error;
     Parser();
     SyntaxTree* program (vector<Token> Tokens);
     //Takes a string of TINY-language code and constructs the parse tree in its private member "outputTree"
     void parseString(QString code);
 
     const SyntaxTree *getOutputTree() const;
+    bool getError() const;
 };
 
 #endif // PARSER_H
