@@ -4,6 +4,7 @@
 #include "scanner.hpp"
 using namespace std;
 int currentChar = 0;
+bool ErrorScanner=false;
 /*All Tiny language reserved words stored for further use*/
 string Reserved_Words[] = { "if","then","else","end","repeat","until","read","write" };
 
@@ -108,6 +109,7 @@ bool is_space(char c) {
 }
 
 Token getToken(string Code) {
+    ErrorScanner=false;
     Token token;
 
     bool is_Reserved = false;
@@ -115,7 +117,7 @@ Token getToken(string Code) {
     int symbolType = 0;
     string type;
     /*State machine implementation and transitions are based on current character*/
-    while (current_state != END) {
+    while (current_state != END ) {
         switch (current_state) {
         case START:
             if (is_digit(Code[currentChar])) {
@@ -200,6 +202,9 @@ Token getToken(string Code) {
                     break;
                 case WRITE:
                     token.Type = "WRITE";
+                    break;
+                case ELSE:
+                    token.Type = "ELSE";
                     break;
             }
             cout << token.Value << ", " << token.Type << endl;
@@ -297,6 +302,7 @@ Token getToken(string Code) {
 
         case ERROR:
             cout<<"ERROR"<<endl;
+            ErrorScanner=true;
             current_state = END;
             break;
         case END:
@@ -314,7 +320,8 @@ vector<Token> getTokenList(string input){
     Token token;
     int index = 0;
     currentChar = 0;
-    while((index < (input.length()-1))){
+    current_state = START;
+    while((index < (input.length()-1))&&!ErrorScanner){
         cout<<input.substr(index,input.length());
         string i=input.substr(index,input.length());
         cout<<"22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222"<<endl;
@@ -329,7 +336,7 @@ vector<Token> getTokenList(string input){
 
     }
     index=0;
-    while(index<tokens.size())
+   /* while(index<tokens.size())
     {
         token=tokens[index];
          cout<<"Index:"<<index <<endl;
@@ -340,6 +347,7 @@ vector<Token> getTokenList(string input){
         cout<<"Inside Scanner"<<endl;
         index++;
     }
+    */
     cout<<"finished";
     cout<<tokens.size();
     return tokens;
